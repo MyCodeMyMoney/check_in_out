@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*
 import time
+import datetime
 import logging
 
 from selenium import webdriver
@@ -22,7 +23,7 @@ logger = logging.getLogger('mytest')
 logger.setLevel(logging.DEBUG)
 
 # 创建一个handler，用于写入日志文件 
-fh = logging.FileHandler('./sign_in.log')
+fh = logging.FileHandler('/home/mjc/my-sh/my-log/sign_in.log')
 fh.setLevel(logging.DEBUG)
 
 # 定义handler的输出格式 
@@ -105,9 +106,10 @@ def work():
         desired_capabilities["pageLoadStrategy"] = "none"
 
         chrome_options = Options()
+        chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
 
-        browser = webdriver.Chrome() #声明浏览器对象
+        browser = webdriver.Chrome(chrome_options=chrome_options) #声明浏览器对象
 
         open_web(url,browser)
         time.sleep(2)
@@ -117,12 +119,13 @@ def work():
 
 
         find_check_email_and_open(browser)
-
         time.sleep(2)
 
+        # dt = datetime.datetime.now()
+        # time.sleep(3)  
         check_in(browser)
+        time.sleep(3)
 
-        time.sleep(3)             
         #退出浏览器
         browser.quit()
 
@@ -134,3 +137,4 @@ def work():
         logger.exception(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ":\r\n"+ str(e))
 if __name__ == '__main__':
     work()
+
