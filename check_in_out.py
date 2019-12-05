@@ -2,6 +2,7 @@
 import time
 import datetime
 import logging
+import random
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -101,9 +102,8 @@ def check_out(browser):
 
 def work():
     try:
-
-        desired_capabilities = DesiredCapabilities.CHROME  # 修改页面加载策略
-        desired_capabilities["pageLoadStrategy"] = "none"
+        # desired_capabilities = DesiredCapabilities.CHROME  # 修改页面加载策略
+        # desired_capabilities["pageLoadStrategy"] = "none"
 
         chrome_options = Options()
         chrome_options.add_argument('--headless')
@@ -122,8 +122,12 @@ def work():
         time.sleep(2)
 
         # dt = datetime.datetime.now()
-        # time.sleep(3)  
-        check_in(browser)
+        # time.sleep(3) 
+        if datetime.datetime.now().time() < datetime.time(12):
+            check_in(browser)
+        else:
+            check_out(browser)
+            # logger.debug('should check out')
         time.sleep(3)
 
         #退出浏览器
@@ -136,5 +140,8 @@ def work():
         logger.debug(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())+": Clock Filed!")
         logger.exception(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ":\r\n"+ str(e))
 if __name__ == '__main__':
+    random_time = random.randint(1,600)
+    logger.debug(random_time)
+    time.sleep(random_time)
     work()
 
